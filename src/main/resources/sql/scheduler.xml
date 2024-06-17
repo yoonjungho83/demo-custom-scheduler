@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.custom.scheduler.mapper.SchedulerMapper">
+	
+	<select id="selectSchedulerList"  resultType="com.custom.scheduler.model.SchedulerVo">
+	
+	SELECT A.CLASS_NM
+	     , A.SCHDL_NM
+	     , A.CRON_EXPRS
+	     , A.USE_YN
+	     , A.EXE_ORD
+	     , A.LOCK_START
+	     , A.LOCK_END
+	     , A.LOCK_BY
+	     , A.LOCK_TIME
+	     , A.LOCK_YN
+	     , A.CRTR
+	     , A.CRT_TIME
+	     , A.MDFR
+	     , A.MDF_TIME
+	     , A.SCHDL_VRSN 
+	FROM   SCHEDULER_TBL A
+	</select>
+	
+	<select id="selectScheduler"  
+	parameterType = "com.custom.scheduler.model.SchedulerVo" 
+	resultType ="com.custom.scheduler.model.SchedulerVo">
+	
+	SELECT A.CLASS_NM
+	     , A.SCHDL_NM
+	     , A.CRON_EXPRS
+	     , A.USE_YN
+	     , A.EXE_ORD
+	     , A.LOCK_START
+	     , A.LOCK_END
+	     , A.LOCK_BY
+	     , A.LOCK_TIME
+	     , A.LOCK_YN
+	     , A.CRTR
+	     , A.CRT_TIME
+	     , A.MDFR
+	     , A.MDF_TIME
+	     , A.SCHDL_VRSN 
+	FROM   SCHEDULER_TBL A
+	WHERE  1=1
+	AND    A.CLASS_NM = #{classNm}
+	AND    A.SCHDL_NM = #{schdlNm}
+	</select>
+	
+	<select id="selectSchedulerForUpdate"  
+	parameterType = "com.custom.scheduler.model.SchedulerVo" 
+	resultType ="com.custom.scheduler.model.SchedulerVo">
+	
+	SELECT A.CLASS_NM
+	     , A.SCHDL_NM
+	     , A.CRON_EXPRS
+	     , A.USE_YN
+	     , A.EXE_ORD
+	     , A.LOCK_START
+	     , A.LOCK_END
+	     , A.LOCK_BY
+	     , A.LOCK_TIME
+	     , A.LOCK_YN
+	     , A.CRTR
+	     , A.CRT_TIME
+	     , A.MDFR
+	     , A.MDF_TIME
+	     , A.SCHDL_VRSN 
+	FROM   SCHEDULER_TBL A
+	WHERE  1=1
+	AND    A.CLASS_NM = #{classNm}
+	AND    A.SCHDL_NM = #{schdlNm}
+	FOR UPDATE
+	</select>
+	
+	<insert id="saveScheduler"  parameterType = "com.custom.scheduler.model.SchedulerVo" >
+	
+	INSERT INTO 
+		SCHEDULER_TBL( CLASS_NM
+				     , SCHDL_NM
+				     , CRON_EXPRS
+				     , USE_YN
+				     , EXE_ORD
+				     , LOCK_START
+				     , LOCK_END
+				     , LOCK_BY
+				     , LOCK_TIME
+				     , LOCK_YN
+				     , CRTR
+				     , CRT_TIME
+				     , SCHDL_VRSN)
+			  VALUES ( #{classNm  }
+				     , #{schdlNm  }
+				     , #{cronExprs}
+				     , #{useYn    }
+				     , #{exeOrd   }
+				     , #{lockStart}
+				     , #{lockEnd  }
+				     , #{lockBy   }
+				     , #{lockTime }
+				     , #{lockYn   }
+				     , #{crtr     }
+				     , NOW()    
+				     , 1)
+	
+	</insert>
+	
+	<update id="modifyScheduler"  parameterType = "com.custom.scheduler.model.SchedulerVo" >
+	
+	UPDATE SCHEDULER_TBL A
+	SET    CRON_EXPRS = #{cronExprs}
+	     , A.LOCK_START = CASE WHEN #{lockStart} IS NULL THEN A.LOCK_START ELSE #{lockStart} END
+	     , A.LOCK_END   = CASE WHEN #{lockEnd}   IS NULL THEN A.LOCK_END   ELSE #{lockEnd}   END 
+	     , A.LOCK_BY    = CASE WHEN #{lockBy}    IS NULL THEN A.LOCK_BY    ELSE #{lockBy}    END
+	     , A.MDFR       = #{mdfr}
+	     , A.MDF_TIME   = NOW()
+	WHERE  1=1
+	AND    A.CLASS_NM = #{classNm}
+	AND    A.SCHDL_NM = #{schdlNm}
+	
+	</update>
+	
+	<delete id="deleteScheduler"  parameterType = "com.custom.scheduler.model.SchedulerVo" >
+	
+	DELETE 
+	FROM   SCHEDULER_TBL
+	WHERE  1=1
+	AND    CLASS_NM = #{classNm}
+	AND    SCHDL_NM = #{schdlNm}
+	 
+	</delete>
+	
+</mapper>

@@ -1,0 +1,29 @@
+spring:
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant-path-matcher
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://localhost:3306/yjh_db
+    username: root
+    password: 1219
+
+server:
+  port: 8888
+  
+  
+mybatis:
+  mapper-locations: classpath:sql/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+#  config-location: classpath:mybatis-config.xml
+  
+    
+  
+  
+#logging:
+#  level:
+#    root: "warn"
+#    org.springframework.web: "info"
+#    org.hibernate: "error"
